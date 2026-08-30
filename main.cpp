@@ -17,6 +17,58 @@ void exibeMatriz(double A[NUM][NUM] ,double B[NUM]){
 
 }
 
+
+
+void pivotParcial(double A[NUM][NUM],double B[NUM], int k){
+    double maior;
+    int maiorLine = 0;
+
+    if(A[k][k] < 0){
+        maior = A[k][k] * -1.0;
+    } else{
+        maior = A[k][k];
+    }
+
+
+    for(int i = k+1; i<NUM ;i++){
+        double temp = A[i][k];
+        if(A[i][k] < 0){
+            temp = A[i][k] * -1;
+        }
+        if(temp > maior){
+            maior = temp;
+            maiorLine = i;
+        }
+    }
+
+    if(maiorLine){
+        for(int j = 0; j < NUM; j++){
+            double tempA = A[maiorLine][j];
+            A[maiorLine][j] = A[k][j];
+            A[k][j] = tempA;
+        }
+        double tempB = B[maiorLine];
+        B[maiorLine] = B[k];
+        B[k] = tempB;
+    }
+}
+
+void triangularSuperior(double A[NUM][NUM] ,double B[NUM]){
+    for(int k = 0; k < NUM - 1; k++){
+        pivotParcial(A,B, k);
+        for(int i = k + 1; i < NUM; i++){
+            if(A[i][k]){
+                double m = A[i][k] / A[k][k];
+
+                for(int j = 0; j < NUM; j++)
+                    A[i][j] = A[i][j] - m * A[k][j];
+                
+                B[i] = B[i] - m * B[k];
+            }
+        }
+    }
+}
+
 /*void criaMatriz(double A[NUM][NUM] ,double B[NUM]){
     for(int i = 0; i < NUM ; i++){
         for(int j = 0; j < NUM; j++){
@@ -32,7 +84,8 @@ void exibeMatriz(double A[NUM][NUM] ,double B[NUM]){
 int main(void){
     cout << fixed << setprecision(4);
     //criaMatriz(A, B);
-    double A[NUM][NUM] = {
+   /*
+   double A[NUM][NUM] = {
         {3,2,-5,1},
         {1, 4, 1, 0},
         {-2,8,3,-4},
@@ -41,20 +94,19 @@ int main(void){
     double B[NUM] {
         8, 2 ,0 ,10
     };
+    */
 
+    double A[NUM][NUM] = {
+        {3,-4,-6,1},
+        {-2, 3, 14, -1},
+        {1,3,2,-5},
+        {-10,-1,-1,0}
+    };
+    double B[NUM] {
+        -5, 7 ,0 ,10
+    };
 
-    for(int k = 0; k < NUM -1; k++){
-        for(int i = k + 1; i < NUM; i++){
-            if(A[i][k] != 0){
-                double m = A[i][k] / A[k][k];
-                for(int j = 0; j < NUM; j++){
-                    A[i][j] = A[i][j] - m * A[k][j];
-                }
-                
-                B[i] = B[i] - m * B[k];
-            }
-        }
-    }
+    triangularSuperior(A,B);
     exibeMatriz(A,B);
 
     return 0;
