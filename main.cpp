@@ -1,4 +1,5 @@
 #include <iostream>
+#include <vector>
 #include <string>
 #include <sstream> 
 #include <iomanip>
@@ -16,7 +17,6 @@ void exibeMatriz(double A[NUM][NUM] ,double B[NUM]){
     }
 
 }
-
 
 
 void pivotParcial(double A[NUM][NUM],double B[NUM], int k){
@@ -53,7 +53,7 @@ void pivotParcial(double A[NUM][NUM],double B[NUM], int k){
     }
 }
 
-void triangularSuperior(double A[NUM][NUM] ,double B[NUM]){
+void triangularSuperior(double A[NUM][NUM], double B[NUM]){
     for(int k = 0; k < NUM - 1; k++){
         pivotParcial(A,B, k);
         for(int i = k + 1; i < NUM; i++){
@@ -69,6 +69,20 @@ void triangularSuperior(double A[NUM][NUM] ,double B[NUM]){
     }
 }
 
+void subsRegressiva(double triSup[NUM][NUM], vector <double> vars, double B[NUM]){
+    for(int i = 0 ;i < NUM; i++){
+        double  sum = 0, result;
+        for(int k =0; k < i; k++){
+            sum += triSup[NUM -i -1][NUM -k -1] * vars[k];
+        }
+        result = (B[NUM-i - 1] - sum) / triSup[NUM-i -1][NUM-i - 1];
+        cout << "x" << NUM-i << "= " << result << endl;
+        vars.push_back(result);
+    }
+
+}
+
+
 /*void criaMatriz(double A[NUM][NUM] ,double B[NUM]){
     for(int i = 0; i < NUM ; i++){
         for(int j = 0; j < NUM; j++){
@@ -79,7 +93,7 @@ void triangularSuperior(double A[NUM][NUM] ,double B[NUM]){
         cin  >> B[i];   
     }
 }   
-*/
+*/ 
 
 int main(void){
     cout << fixed << setprecision(4);
@@ -108,6 +122,8 @@ int main(void){
 
     triangularSuperior(A,B);
     exibeMatriz(A,B);
+    vector <double> vars;
+    subsRegressiva(A, vars, B);
 
     return 0;
 }
