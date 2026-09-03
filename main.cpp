@@ -1,9 +1,11 @@
+#include "Elimination.h"
+#include "GJacobi.h"
+
 #include <iostream>
 #include <string>
 #include <sstream> 
 #include <iomanip>
 #include <vector>
-#include <Elimination.h>
 
 #define NUM 4
 using namespace std;
