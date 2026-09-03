@@ -1,5 +1,18 @@
 #include <Elimination.h>
 
+void Elimination::subsRegressiva(double **triSup, vector<double> &vars, double *B, const int NUM){
+    for(int i = 0 ;i < NUM; i++){
+        double  sum = 0, result;
+        for(int k =0; k < i; k++){
+            sum += triSup[NUM -i -1][NUM -k -1] * vars[k];
+        }
+        result = (B[NUM-i - 1] - sum) / triSup[NUM-i -1][NUM-i - 1];
+        cout << "x" << NUM-i << "= " << result << endl;
+        vars.push_back(result);
+    }
+}
+
+
 void Elimination::pivotParcial(double **A,double *B, const int k, const int NUM){
     double maior  = fabs(A[k][k]);
     int maiorLine = k;
@@ -38,18 +51,6 @@ void Elimination::triangularSuperior(double **A, double *B, const int NUM){
                 B[i] = B[i] - m * B[k];
             }
         }
-    }
-}
-
-void Elimination::subsRegressiva(double **triSup, vector<double> &vars, double *B, const int NUM){
-    for(int i = 0 ;i < NUM; i++){
-        double  sum = 0, result;
-        for(int k =0; k < i; k++){
-            sum += triSup[NUM -i -1][NUM -k -1] * vars[k];
-        }
-        result = (B[NUM-i - 1] - sum) / triSup[NUM-i -1][NUM-i - 1];
-        cout << "x" << NUM-i << "= " << result << endl;
-        vars.push_back(result);
     }
 }
 
