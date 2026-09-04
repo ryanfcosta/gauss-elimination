@@ -9,33 +9,56 @@ bool GJacobi::critLinhas(double** A, const int NUM){
             }
         }
         alpha = sum/fabs(A[i][i]);
-        cout << "alpha "<< i << " " << alpha;
+        cout << "alpha "<< i  + 1<< " " << alpha << endl;
         if(alpha >= 1) return false;
     }
+    cout << endl;
     return true;
 }
 
+bool GJacobi::critParada(vector<double> last, vector<double> current, const int NUM, const double epsilon){
+    double d = 0.0 ,xMax = 0.0, dr;
+
+    for(int i = 0; i < NUM; i++){
+        if(fabs(current[i] - last[i]) > d){
+            d = fabs(current[i] - last[i]);
+            xMax = fabs(current[i]);
+        }
+    }
+    dr = d / xMax;
+
+    if(d < epsilon && dr < epsilon) return true;
+    return false;
+}
+
 void GJacobi::gaussJacobi(double** A, vector <double> &vars, double* B, const int NUM){
-    for(int k = 0; k < NUM; k++) vars.push_back(0);
-    double temp[NUM];
-    
+    for(int k = 0; k < NUM; k++);
+    vector<double> temp(NUM, 0.0);
+    bool stop = false;
+
+    int reps = 0;
+    do{ 
         for(int i = 0; i < NUM; i++){
             double sum = 0;
             for(int j = 0 ; j < NUM; j++){
                 if( i!= j){
                     sum += A[i][j] * vars[j];
                 }
-                temp[i] = (B[i] - sum) / A[i][i];
             } 
+            temp[i] = (B[i] - sum) / A[i][i];
         }
-    
+
+        stop = critParada(temp, vars, NUM, 1e-6);
+        for (int i = 0; i < NUM; i++) vars[i]=temp[i];
+        reps ++;
+    } while(!stop && reps < 1000);
 }
 
 void GJacobi::solve(double**A, vector<double> & vars, double *B, const int  NUM){
-    if(critLinhas){
+    if(critLinhas(A, NUM)){
         gaussJacobi(A,vars,B,NUM);
     }
     else{
-        cout << "Não irá convergir";
+        cout << "Não irá convergir" << endl;
     }
 }

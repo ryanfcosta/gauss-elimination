@@ -8,7 +8,7 @@ void Elimination::subsRegressiva(double **triSup, vector<double> &vars, double *
         }
         result = (B[NUM-i - 1] - sum) / triSup[NUM-i -1][NUM-i - 1];
         cout << "x" << NUM-i << "= " << result << endl;
-        vars.push_back(result);
+        vars[i] = result;
     }
 }
 

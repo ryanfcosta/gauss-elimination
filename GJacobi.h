@@ -11,4 +11,5 @@ public:
 private:
     static bool critLinhas(double** A, const int NUM);
     static void gaussJacobi(double** A, vector <double> &vars, double* B, const int NUM);
+    static bool critParada(vector<double> last, vector<double> current, const int NUM, const double epsilon);
 };
