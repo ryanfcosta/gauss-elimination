@@ -58,8 +58,16 @@ int main(void){
     }
     vector <double> vars;
 
-    Elimination::solve(A,vars,B, NUM);
+    Elimination::solve(A,vars,B,NUM);
     exibeMatriz(A,B);
+    
+    GJacobi::solve(A,vars,B,NUM);
+    exibeMatriz(A,B);
+
+    for(auto const x : vars){
+        cout << x << endl;
+    }
+
     
     return 0;
 }

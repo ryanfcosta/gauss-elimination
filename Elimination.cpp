@@ -1,4 +1,4 @@
-#include <Elimination.h>
+#include "Elimination.h"
 
 void Elimination::subsRegressiva(double **triSup, vector<double> &vars, double *B, const int NUM){
     for(int i = 0 ;i < NUM; i++){
@@ -54,8 +54,7 @@ void Elimination::triangularSuperior(double **A, double *B, const int NUM){
     }
 }
 
-vector<double> Elimination::solve(double **A, vector<double> &vars, double *B, const int NUM = 4){
+void Elimination::solve(double **A, vector<double> &vars, double *B, const int NUM = 4){
     triangularSuperior(A, B, NUM);
     subsRegressiva(A, vars, B, NUM);
-    return vars;
 }  
