@@ -52,6 +52,7 @@ void GJacobi::gaussJacobi(double** A, vector <double> &vars, double* B, const in
         for (int i = 0; i < NUM; i++) vars[i]=temp[i];
         reps ++;
     } while(!stop && reps < 1000);
+    cout << "Repetições: " << reps << endl;
 }
 
 void GJacobi::solve(double**A, vector<double> & vars, double *B, const int  NUM){

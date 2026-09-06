@@ -1,14 +1,12 @@
 #include "Elimination.h"
 
 void Elimination::subsRegressiva(double **triSup, vector<double> &vars, double *B, const int NUM){
-    for(int i = 0 ;i < NUM; i++){
-        double  sum = 0, result;
-        for(int k =0; k < i; k++){
-            sum += triSup[NUM -i -1][NUM -k -1] * vars[k];
+    for(int i = NUM - 1 ;i >= 0; i--){
+        double  sum = 0;
+        for(int j = i + 1; j < NUM; j++){
+            sum += triSup[i][j] * vars[j];
         }
-        result = (B[NUM-i - 1] - sum) / triSup[NUM-i -1][NUM-i - 1];
-        cout << "x" << NUM-i << "= " << result << endl;
-        vars[i] = result;
+        vars[i] = (B[i] - sum) / triSup[i][i];
     }
 }
 

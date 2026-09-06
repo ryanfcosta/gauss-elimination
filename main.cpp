@@ -49,6 +49,9 @@
 
         Elimination::solve(A,vars,B,NUM);
         exibeMatriz(A,B);
+        for(auto const x : vars){
+            cout << x << " ";
+        } cout << endl;
 
         for (int i = 0; i < NUM; i++) delete[] A[i];
         delete[] A;
@@ -67,7 +70,7 @@
 
         for(auto const x : vars){
             cout << x << " ";
-        }
+        }cout << endl;
 
         for (int i = 0; i < NUM; i++) delete[] nA[i];
         delete[] nA;
