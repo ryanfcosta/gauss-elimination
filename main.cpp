@@ -1,5 +1,6 @@
     #include "Elimination.h"
     #include "GJacobi.h"
+    #include "GSeidel.h"
 
     #include <iostream>
     #include <string>
@@ -65,6 +66,7 @@
             }
         }
         
+        vars.assign(NUM, 0.0);
         GJacobi::solve(nA,vars,B,NUM);
         exibeMatriz(nA,B);
 
@@ -74,6 +76,26 @@
 
         for (int i = 0; i < NUM; i++) delete[] nA[i];
         delete[] nA;
+
+        vars.assign(NUM, 0.0);
+        double ** n2A = new double*[NUM];
+        for (int i = 0; i < NUM; i++) {
+            B[i] = tempB[i];
+            n2A[i] = new double[NUM];
+            for (int j = 0; j < NUM; j++) {
+                n2A[i][j] = tempA[i][j];
+            }
+        }
+        
+        GSeidel::solve(n2A,vars,B,NUM);
+        exibeMatriz(n2A,B);
+
+        for(auto const x : vars){
+            cout << x << " ";
+        }cout << endl;
+
+        for (int i = 0; i < NUM; i++) delete[] n2A[i];
+        delete[] n2A;
 
         return 0;
     }
