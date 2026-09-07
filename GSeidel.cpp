@@ -50,7 +50,7 @@ void GSeidel::gaussSeidel(double** A, vector <double> &vars, double* B, const in
 }
 
 void GSeidel::solve(double* *A, vector<double> &vars, double* B, const int NUM){
-    if(critLinhas || critSassenfeld){
+    if(GJacobi::critLinhas(A, NUM) || GSeidel::critSassenfeld(A, NUM)){
         gaussSeidel(A,vars,B, NUM);
     }else{
         cout << "Não irá convergir" << endl;

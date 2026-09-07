@@ -25,7 +25,11 @@ bool GJacobi::critParada(vector<double> last, vector<double> current, const int 
             xMax = fabs(current[i]);
         }
     }
-    dr = d / xMax;
+    if(xMax == 0.0){
+        dr = 0.0;
+    } else {
+        dr = d / xMax;
+    }
 
     if(d < epsilon && dr < epsilon) return true;
     return false;
