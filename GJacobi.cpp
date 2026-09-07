@@ -32,24 +32,23 @@ bool GJacobi::critParada(vector<double> last, vector<double> current, const int 
 }
 
 void GJacobi::gaussJacobi(double** A, vector <double> &vars, double* B, const int NUM){
-    for(int k = 0; k < NUM; k++);
     vector<double> temp(NUM, 0.0);
     bool stop = false;
 
     int reps = 0;
     do{ 
         for(int i = 0; i < NUM; i++){
-            double sum = 0;
+            double sum = 0.0;
             for(int j = 0 ; j < NUM; j++){
-                if( i!= j){
+                if(  i!= j){
                     sum += A[i][j] * vars[j];
                 }
             } 
             temp[i] = (B[i] - sum) / A[i][i];
         }
 
-        stop = critParada(temp, vars, NUM, 1e-6);
-        for (int i = 0; i < NUM; i++) vars[i]=temp[i];
+        stop = critParada(vars, temp, NUM, 1e-6);
+        for (int i = 0; i < NUM; i++) vars[i] = temp[i];
         reps ++;
     } while(!stop && reps < 1000);
     cout << "Repetições: " << reps << endl;
