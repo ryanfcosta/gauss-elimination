@@ -5,9 +5,9 @@
 class GSeidel : public GJacobi{
 
 public:
-    static void solve(double* *A, vector<double> &vars, double* B, const int NUM);
+    static void solve(double* *a, vector<double> &vars, double* b, const int NUM);
 
 private:
-    static bool critSassenfeld(double **A, const int NUM);
-    static void gaussSeidel(double** A, vector<double> &vars, double* B, const int NUM);
+    static bool critSassenfeld(double **a, const int NUM);
+    static void gaussSeidel(double** a, vector<double> &vars, double* b, const int NUM);
 };

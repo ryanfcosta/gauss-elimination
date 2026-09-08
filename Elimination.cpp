@@ -1,58 +1,58 @@
 #include "Elimination.h"
 
-void Elimination::subsRegressiva(double **triSup, vector<double> &vars, double *B, const int NUM){
+void Elimination::subsRegressiva(double **tri_sup, vector<double> &vars, double *b, const int NUM){
     for(int i = NUM - 1 ;i >= 0; i--){
         double  sum = 0;
         for(int j = i + 1; j < NUM; j++){
-            sum += triSup[i][j] * vars[j];
+            sum += tri_sup[i][j] * vars[j];
         }
-        vars[i] = (B[i] - sum) / triSup[i][i];
+        vars[i] = (b[i] - sum) / tri_sup[i][i];
     }
 }
 
 
-void Elimination::pivotParcial(double **A,double *B, const int k, const int NUM){
-    double maior  = fabs(A[k][k]);
-    int maiorLine = k;
+void Elimination::pivotParcial(double **a,double *b, const int k, const int NUM){
+    double maior  = fabs(a[k][k]);
+    int maior_line = k;
 
     for(int i = k+1; i<NUM; i++){
-        double temp = fabs(A[i][k]);
+        double temp = fabs(a[i][k]);
 
         if(temp > maior){
             maior = temp;
-            maiorLine = i;
+            maior_line = i;
         }
     }
 
-    if(maiorLine != k){
+    if(maior_line != k){
         for(int j = 0; j < NUM; j++){
-            double tempA = A[maiorLine][j];
-            A[maiorLine][j] = A[k][j];
-            A[k][j] = tempA;
+            double tempA = a[maior_line][j];
+            a[maior_line][j] = a[k][j];
+            a[k][j] = tempA;
         }
-        double tempB = B[maiorLine];
-        B[maiorLine] = B[k];
-        B[k] = tempB;
+        double tempB = b[maior_line];
+        b[maior_line] = b[k];
+        b[k] = tempB;
     }
 }
 
-void Elimination::triangularSuperior(double **A, double *B, const int NUM){
+void Elimination::triangularSuperior(double **a, double *b, const int NUM){
     for(int k = 0; k < NUM - 1; k++){
-        pivotParcial(A, B, k, NUM);
+        pivotParcial(a, b, k, NUM);
         for(int i = k + 1; i < NUM; i++){
-            if(fabs(A[i][k]) > 1e-12){
-                double m = A[i][k] / A[k][k];
+            if(fabs(a[i][k]) > 1e-12){
+                double m = a[i][k] / a[k][k];
 
                 for(int j = 0; j < NUM; j++)
-                    A[i][j] = A[i][j] - m * A[k][j];
+                    a[i][j] = a[i][j] - m * a[k][j];
                 
-                B[i] = B[i] - m * B[k];
+                b[i] = b[i] - m * b[k];
             }
         }
     }
 }
 
-void Elimination::solve(double **A, vector<double> &vars, double *B, const int NUM = 4){
-    triangularSuperior(A, B, NUM);
-    subsRegressiva(A, vars, B, NUM);
+void Elimination::solve(double **a, vector<double> &vars, double *b, const int NUM = 4){
+    triangularSuperior(a, b, NUM);
+    subsRegressiva(a, vars, b, NUM);
 }  

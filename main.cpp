@@ -9,80 +9,91 @@
 #include <vector>
 
 #include <QApplication>
+#include <QWidget>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QGridLayout>
 
 #define NUM 4
 
 using namespace std;
 
-void exibeMatriz(double **A ,double *B){
+void exibeMatriz(double **a ,double *b){
     for(int i = 0; i < NUM ; i++){
         for(int j = 0; j < NUM; j++){
-            cout << A[i][j] << " ";
+            cout << a[i][j] << " ";
         }
-        cout <<" | " << B[i] <<"\n";
+        cout <<" | " << b[i] <<"\n";
     }
         cout << endl;
 }
 
 int main(int argc, char* argv[]){
+    QApplication app(argc, argv);
+    QWidget janela;
+    janela.setWindowTitle("Num-Methods Visualization");
+    janela.resize(1920,1080);
+
+    QVBoxLayout *main_layout = new QVBoxLayout(&janela);
+
     cout << fixed << setprecision(9);
 
-    double tempA[NUM][NUM] = {
+    double a_temp[NUM][NUM] = {
         {-18,3,4,-5},
         {1, -6, 0, 3},
         {1,4,-8,-1},
         {-2,3,-4,-10}
     };
 
-    double tempB[NUM] {
+    double b_temp[NUM] {
         0, 10 ,5 ,-3
     };
 
-    double **A = new double*[NUM];
-    double B[NUM];
+    double **a = new double*[NUM];
+    double b[NUM];
     for (int i = 0; i < NUM; i++) {
-        B[i] = tempB[i];
-        A[i] = new double[NUM];
+        b[i] = b_temp[i];
+        a[i] = new double[NUM];
         for (int j = 0; j < NUM; j++) {
-            A[i][j] = tempA[i][j];
+            a[i][j] = a_temp[i][j];
         }
     }
     vector <double> vars(NUM, 0.0);
-    Elimination::solve(A,vars,B,NUM);
-    exibeMatriz(A,B);
+    Elimination::solve(a,vars,b,NUM);
+    exibeMatriz(a,b);
 
     for(auto const x : vars){
         cout << x << " ";
     } cout << endl;
-    for (int i = 0; i < NUM; i++) delete[] A[i];
-    delete[] A;
+    for (int i = 0; i < NUM; i++) delete[] a[i];
+    delete[] a;
 
 
-    double ** nA = new double*[NUM];
+    double ** a_new = new double*[NUM];
     for (int i = 0; i < NUM; i++) {
-        B[i] = tempB[i];
-        nA[i] = new double[NUM];
+        b[i] = b_temp[i];
+        a_new[i] = new double[NUM];
         for (int j = 0; j < NUM; j++) {
-            nA[i][j] = tempA[i][j];
+            a_new[i][j] = a_temp[i][j];
         }
     }
     
     vars.assign(NUM, 0.0);
-    GJacobi::solve(nA,vars,B,NUM);
+    GJacobi::solve(a_new,vars,b,NUM);
 
     for(auto const x : vars){
         cout << x << " ";
     }cout << endl;
 
     vars.assign(NUM, 0.0);
-    GSeidel::solve(nA,vars,B,NUM);
+    GSeidel::solve(a_new,vars,b,NUM);
 
     for(auto const x : vars){
         cout << x << " ";
     }cout << endl;
-    
-    for (int i = 0; i < NUM; i++) delete[] nA[i];
-    delete[] nA;
+
+    for (int i = 0; i < NUM; i++) delete[] a_new[i];
+    delete[] a_new;
 
     return 0;
 }
