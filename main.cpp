@@ -13,6 +13,8 @@
 #include <QVBoxLayout>
 #include <QHBoxLayout>
 #include <QGridLayout>
+#include <QLabel>
+#include <QString>
 
 #define NUM 4
 
@@ -31,10 +33,31 @@ void exibeMatriz(double **a ,double *b){
 int main(int argc, char* argv[]){
     QApplication app(argc, argv);
     QWidget janela;
-    janela.setWindowTitle("Num-Methods Visualization");
+    janela.setWindowTitle("Gauss Methods Visualization");
     janela.resize(1920,1080);
 
     QVBoxLayout *main_layout = new QVBoxLayout(&janela);
+
+    QHBoxLayout *visualize_layout = new QHBoxLayout();
+    QGridLayout *matrix_layout = new QGridLayout();
+    matrix_layout->setSpacing(5);
+    QVBoxLayout *results_container = new QVBoxLayout();
+
+    QHBoxLayout *buttons_layout = new QHBoxLayout();
+    QVBoxLayout *methods_container = new QVBoxLayout();
+    QVBoxLayout *control_container = new QVBoxLayout();
+
+    main_layout->addLayout(visualize_layout);
+    main_layout->addLayout(buttons_layout);
+
+    visualize_layout->addLayout(matrix_layout);
+    visualize_layout->addLayout(results_container);
+
+    buttons_layout->addLayout(methods_container);
+    buttons_layout->addLayout(control_container);
+
+    QLabel* nums_matrix[NUM][NUM + 1];
+
 
     cout << fixed << setprecision(9);
 
@@ -53,9 +76,11 @@ int main(int argc, char* argv[]){
     double b[NUM];
     for (int i = 0; i < NUM; i++) {
         b[i] = b_temp[i];
+        nums_matrix[i][NUM]->QLabel::setNum(b[i]);
         a[i] = new double[NUM];
         for (int j = 0; j < NUM; j++) {
             a[i][j] = a_temp[i][j];
+            nums_matrix[i][j]->QLabel::setNum(a[i][j]);
         }
     }
     vector <double> vars(NUM, 0.0);
