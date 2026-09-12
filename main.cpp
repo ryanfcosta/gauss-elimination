@@ -120,5 +120,6 @@ int main(int argc, char* argv[]){
     for (int i = 0; i < NUM; i++) delete[] a_new[i];
     delete[] a_new;
 
-    return 0;
+    janela.show();
+    return app.exec();
 }
