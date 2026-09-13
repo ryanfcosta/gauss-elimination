@@ -15,6 +15,8 @@
 #include <QGridLayout>
 #include <QLabel>
 #include <QString>
+#include <QFile>
+#include <QTextStream>
 
 #define NUM 4
 
@@ -31,7 +33,19 @@ void exibeMatriz(double **a ,double *b){
 }
 
 int main(int argc, char* argv[]){
-    QApplication app(argc, argv);
+    QApplication app(argc, argv);   
+    QFile styleFile("style.qss");
+
+    if (styleFile.open(QFile::ReadOnly)) {
+        QTextStream stream(&styleFile);
+        QString qss = stream.readAll();
+        app.setStyleSheet(qss);
+        styleFile.close();
+    } else {
+        cout << "Aviso: Nao foi possivel carregar o style.qss" << endl;
+    }
+
+
     QWidget janela;
     janela.setWindowTitle("Gauss Methods Visualization");
     janela.resize(1920,1080);
@@ -52,6 +66,7 @@ int main(int argc, char* argv[]){
 
     visualize_layout->addLayout(matrix_layout);
     visualize_layout->addLayout(results_container);
+    visualize_layout->setAlignment(matrix_layout, Qt::AlignCenter);
 
     buttons_layout->addLayout(methods_container);
     buttons_layout->addLayout(control_container);
@@ -62,10 +77,10 @@ int main(int argc, char* argv[]){
     cout << fixed << setprecision(9);
 
     double a_temp[NUM][NUM] = {
-        {-18,3,4,-5},
-        {1, -6, 0, 3},
-        {1,4,-8,-1},
-        {-2,3,-4,-10}
+        {-18.0000,3.0000,4.0000,-5.0000},
+        {1.0000, -6.0000, 0.0000, 3.0000},
+        {1.0000,4.0000,-8.0000,-1.0000},
+        {-2.0000,3.0000,-4.0000,-10.0000}
     };
 
     double b_temp[NUM] {
@@ -79,6 +94,7 @@ int main(int argc, char* argv[]){
 
         nums_matrix[i][NUM] = new QLabel();
         nums_matrix[i][NUM]->setNum(b[i]);
+        nums_matrix[i][NUM]->setStyleSheet("border-left: 3px solid #FF5C00;");
         matrix_layout->addWidget(nums_matrix[i][NUM], i, NUM);
         a[i] = new double[NUM];
         for (int j = 0; j < NUM; j++) {
@@ -86,10 +102,27 @@ int main(int argc, char* argv[]){
 
             nums_matrix[i][j] = new QLabel();
             nums_matrix[i][j]->setNum(a[i][j]);
+            
             matrix_layout->addWidget(nums_matrix[i][j], i, j);
         }
     }
     vector <double> vars(NUM, 0.0);
+    QLabel * var_labels[NUM];
+    for(int i = 0; i < NUM; i++){
+        var_labels[i] = new QLabel();
+
+        QString result_text = QString("x%1 = %2").arg(i + 1).arg(vars[i], 0, 'f', 4);
+        var_labels[i] -> setText(result_text);
+
+        var_labels[i]->setFixedSize(150, 40);
+        var_labels[i]->setAlignment(Qt::AlignCenter);
+
+        var_labels[i]->setObjectName("resultado");
+        results_container->addWidget(var_labels[i]);
+    }
+
+
+
     Elimination::solve(a,vars,b,NUM);
     exibeMatriz(a,b);
 
