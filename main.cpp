@@ -76,11 +76,17 @@ int main(int argc, char* argv[]){
     double b[NUM];
     for (int i = 0; i < NUM; i++) {
         b[i] = b_temp[i];
-        nums_matrix[i][NUM]->QLabel::setNum(b[i]);
+
+        nums_matrix[i][NUM] = new QLabel();
+        nums_matrix[i][NUM]->setNum(b[i]);
+        matrix_layout->addWidget(nums_matrix[i][NUM], i, NUM);
         a[i] = new double[NUM];
         for (int j = 0; j < NUM; j++) {
             a[i][j] = a_temp[i][j];
-            nums_matrix[i][j]->QLabel::setNum(a[i][j]);
+
+            nums_matrix[i][j] = new QLabel();
+            nums_matrix[i][j]->setNum(a[i][j]);
+            matrix_layout->addWidget(nums_matrix[i][j], i, j);
         }
     }
     vector <double> vars(NUM, 0.0);
